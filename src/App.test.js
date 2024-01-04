@@ -1,8 +1,26 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { fireEvent, render, screen ,waitFor} from "@testing-library/react";
+import { BookingForm } from "./components/BookingForm";
+import "@testing-library/jest-dom/extend-expect";
+afterEach(() => {
+  // restore the spy created with spyOn
+  jest.restoreAllMocks();
+});
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('test Booking component', () => {
+  test('form will we not called when in put is null', async() => { 
+    const handleSubmit = jest.fn();
+
+    render(<BookingForm submit={handleSubmit} />);
+    
+    
+    const submitButton = screen.getByRole("button");
+    fireEvent.click(submitButton);
+
+
+    await waitFor(()=>{
+    expect(submitButton).toHaveBeenCalled()
+    //  console.log(submitButton)
+    })
+
+   })
 });
